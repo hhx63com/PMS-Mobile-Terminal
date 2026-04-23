@@ -7,8 +7,22 @@ import { Item } from '../models/item.model';
 })
 export class CartService {
   private cart: CartItem[] = [];
+  private readonly STORAGE_KEY = 'art_gallery_cart';
 
-  constructor() { }
+  constructor() {
+    this.loadFromStorage();
+  }
+
+  private loadFromStorage(): void {
+    const stored = localStorage.getItem(this.STORAGE_KEY);
+    if (stored) {
+      this.cart = JSON.parse(stored);
+    }
+  }
+
+  private saveToStorage(): void {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.cart));
+  }
 
   getCart(): CartItem[] {
     return this.cart;
@@ -21,21 +35,25 @@ export class CartService {
     } else {
       this.cart.push({ item, quantity });
     }
+    this.saveToStorage();
   }
 
   removeFromCart(itemId: number): void {
     this.cart = this.cart.filter(cartItem => cartItem.item.item_id !== itemId);
+    this.saveToStorage();
   }
 
   updateQuantity(itemId: number, quantity: number): void {
     const cartItem = this.cart.find(item => item.item.item_id === itemId);
     if (cartItem) {
       cartItem.quantity = quantity;
+      this.saveToStorage();
     }
   }
 
   clearCart(): void {
     this.cart = [];
+    this.saveToStorage();
   }
 
   getTotal(): number {

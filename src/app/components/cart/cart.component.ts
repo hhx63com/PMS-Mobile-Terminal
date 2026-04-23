@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CartItem } from '../../models/cart-item.model';
-import { CartService } from '../../services/cart.service';
+import { Item } from '../../models/item.model';
+import { ItemService } from '../../services/item.service';
 
 @Component({
   selector: 'app-cart',
@@ -11,34 +11,29 @@ import { CartService } from '../../services/cart.service';
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
-  cartItems: CartItem[] = [];
+  items: Item[] = [];
 
-  constructor(private cartService: CartService) { }
+  constructor(private itemService: ItemService) { }
 
   ngOnInit(): void {
-    this.cartItems = this.cartService.getCart();
+    this.itemService.getItems().subscribe(items => {
+      this.items = items;
+    });
   }
 
-  updateQuantity(itemId: number, quantity: number): void {
-    this.cartService.updateQuantity(itemId, quantity);
-    this.cartItems = this.cartService.getCart();
+  getTotalStock(): number {
+    return this.items.reduce((total, item) => total + item.quantity, 0);
   }
 
-  removeFromCart(itemId: number): void {
-    this.cartService.removeFromCart(itemId);
-    this.cartItems = this.cartService.getCart();
+  getTotalValue(): number {
+    return this.items.reduce((total, item) => total + (item.price * item.quantity), 0);
   }
 
-  clearCart(): void {
-    this.cartService.clearCart();
-    this.cartItems = [];
+  getInStockCount(): number {
+    return this.items.filter(item => item.stock_status !== 'Out of stock').length;
   }
 
-  getTotal(): number {
-    return this.cartService.getTotal();
-  }
-
-  getTotalQuantity(): number {
-    return this.cartService.getTotalQuantity();
+  getOutOfStockCount(): number {
+    return this.items.filter(item => item.stock_status === 'Out of stock').length;
   }
 }

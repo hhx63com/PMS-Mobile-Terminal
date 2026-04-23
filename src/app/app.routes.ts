@@ -6,7 +6,7 @@ import { ItemManagementComponent } from './components/item-management/item-manag
 
 export const routes: Routes = [
   { path: '', component: ItemListComponent },
-  { path: 'cart', component: CartComponent },
+  { path: 'inventory', component: CartComponent },
   { path: 'history', component: HistoryComponent },
   { path: 'management', component: ItemManagementComponent },
 ];
