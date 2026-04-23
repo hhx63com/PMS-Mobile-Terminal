@@ -1,0 +1,57 @@
+<h2>购物车</h2>
+<div *ngIf="cartItems.length === 0" class="empty-cart">
+  <div class="empty-cart-content">
+    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=empty%20shopping%20cart%20icon&image_size=square" alt="空购物车">
+    <h3>购物车为空</h3>
+    <p>去浏览商品，添加一些商品到购物车吧！</p>
+    <a href="/" class="btn continue-shopping-btn">继续购物</a>
+  </div>
+</div>
+<div *ngIf="cartItems.length > 0" class="cart-container">
+  <div class="cart-items">
+    <div *ngFor="let cartItem of cartItems" class="cart-item">
+      <div class="cart-item-image">
+        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=product%20image%20for%20{{cartItem.item.item_name}}&image_size=square" alt="{{ cartItem.item.item_name }}">
+      </div>
+      <div class="cart-item-info">
+        <h3>{{ cartItem.item.item_name }}</h3>
+        <p class="cart-item-category">类别: {{ cartItem.item.category }}</p>
+        <p class="cart-item-price">价格: ${{ cartItem.item.price }}</p>
+      </div>
+      <div class="cart-item-actions">
+        <div class="quantity-control">
+          <button (click)="updateQuantity(cartItem.item.item_id, cartItem.quantity - 1)" [disabled]="cartItem.quantity <= 1" class="quantity-btn">-</button>
+          <span class="quantity">{{ cartItem.quantity }}</span>
+          <button (click)="updateQuantity(cartItem.item.item_id, cartItem.quantity + 1)" class="quantity-btn">+</button>
+        </div>
+        <button (click)="removeFromCart(cartItem.item.item_id)" class="remove-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+          </svg>
+          移除
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="cart-summary">
+    <h3>订单摘要</h3>
+    <div class="summary-item">
+      <span>商品数量:</span>
+      <span>{{ getTotalQuantity() }}</span>
+    </div>
+    <div class="summary-item">
+      <span>小计:</span>
+      <span>${{ getTotal() }}</span>
+    </div>
+    <div class="summary-item total">
+      <span>总计:</span>
+      <span>${{ getTotal() }}</span>
+    </div>
+    <div class="cart-actions">
+      <a href="/" class="btn continue-shopping-btn">继续购物</a>
+      <button (click)="clearCart()" class="btn clear-btn">清空购物车</button>
+      <button class="btn checkout-btn">结算</button>
+    </div>
+  </div>
+</div>

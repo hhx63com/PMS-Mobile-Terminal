@@ -1,0 +1,54 @@
+<h2>商品管理</h2>
+
+<div class="add-item-form">
+  <h3>添加商品</h3>
+  <form (ngSubmit)="addItem()">
+    <div class="form-group">
+      <label>商品名称:</label>
+      <input type="text" [(ngModel)]="newItem.item_name" name="item_name" required>
+    </div>
+    <div class="form-group">
+      <label>类别:</label>
+      <input type="text" [(ngModel)]="newItem.category" name="category" required>
+    </div>
+    <div class="form-group">
+      <label>数量:</label>
+      <input type="number" [(ngModel)]="newItem.quantity" name="quantity" required>
+    </div>
+    <div class="form-group">
+      <label>价格:</label>
+      <input type="number" [(ngModel)]="newItem.price" name="price" required>
+    </div>
+    <div class="form-group">
+      <label>供应商:</label>
+      <input type="text" [(ngModel)]="newItem.supplier_name" name="supplier_name" required>
+    </div>
+    <div class="form-group">
+      <label>库存状态:</label>
+      <select [(ngModel)]="newItem.stock_status" name="stock_status">
+        <option value="In stock">In stock</option>
+        <option value="Low stock">Low stock</option>
+        <option value="Out of stock">Out of stock</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>特色商品:</label>
+      <input type="number" [(ngModel)]="newItem.featured_item" name="featured_item">
+    </div>
+    <div class="form-group">
+      <label>特殊说明:</label>
+      <textarea [(ngModel)]="newItem.special_note" name="special_note"></textarea>
+    </div>
+    <button type="submit">添加商品</button>
+  </form>
+</div>
+
+<div class="item-list">
+  <h3>商品列表</h3>
+  <div *ngFor="let item of items" class="item-card">
+    <h4>{{ item.item_name }}</h4>
+    <p>ID: {{ item.item_id }}</p>
+    <p>价格: ${{ item.price }}</p>
+    <button (click)="deleteItem(item.item_id)" class="delete-btn">删除</button>
+  </div>
+</div>
