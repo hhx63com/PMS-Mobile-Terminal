@@ -4,9 +4,14 @@
 </div>
 <div *ngIf="history.length > 0" class="history-items">
   <div *ngFor="let historyItem of history" class="history-item">
-    <h3>{{ historyItem.item.item_name }}</h3>
-    <p>浏览时间: {{ historyItem.viewedAt | date: 'yyyy-MM-dd HH:mm:ss' }}</p>
-    <p>价格: ${{ historyItem.item.price }}</p>
+    <div class="history-image">
+      <img [src]="getImageUrl(historyItem.item)" [alt]="historyItem.item.item_name">
+    </div>
+    <div class="history-info">
+      <h3>{{ historyItem.item.item_name }}</h3>
+      <p>浏览时间: {{ historyItem.viewedAt | date: 'yyyy-MM-dd HH:mm:ss' }}</p>
+      <p>价格: ${{ historyItem.item.price }}</p>
+    </div>
   </div>
   <button (click)="clearHistory()" class="clear-btn">清空历史记录</button>
 </div>

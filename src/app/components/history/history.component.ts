@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HistoryItem } from '../../models/history-item.model';
 import { HistoryService } from '../../services/history.service';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-history',
@@ -13,10 +14,17 @@ import { HistoryService } from '../../services/history.service';
 export class HistoryComponent implements OnInit {
   history: HistoryItem[] = [];
 
-  constructor(private historyService: HistoryService) { }
+  constructor(
+    private historyService: HistoryService,
+    private imageService: ImageService
+  ) { }
 
   ngOnInit(): void {
     this.history = this.historyService.getHistory();
+  }
+
+  getImageUrl(item: any): string {
+    return this.imageService.getImageUrl(item);
   }
 
   clearHistory(): void {

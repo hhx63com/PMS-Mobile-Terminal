@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Item } from '../../models/item.model';
 import { ItemService } from '../../services/item.service';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,12 +14,19 @@ import { ItemService } from '../../services/item.service';
 export class CartComponent implements OnInit {
   items: Item[] = [];
 
-  constructor(private itemService: ItemService) { }
+  constructor(
+    private itemService: ItemService,
+    private imageService: ImageService
+  ) { }
 
   ngOnInit(): void {
     this.itemService.getItems().subscribe(items => {
       this.items = items;
     });
+  }
+
+  getImageUrl(item: Item): string {
+    return this.imageService.getImageUrl(item);
   }
 
   getTotalStock(): number {

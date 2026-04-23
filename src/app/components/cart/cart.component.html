@@ -21,7 +21,7 @@
   <div class="inventory-items">
     <div *ngFor="let item of items" class="inventory-item">
       <div class="item-image">
-        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=product%20image%20for%20{{item.item_name}}&image_size=square" alt="{{ item.item_name }}">
+        <img [src]="getImageUrl(item)" [alt]="item.item_name">
       </div>
       <div class="item-info">
         <h3>{{ item.item_name }}</h3>

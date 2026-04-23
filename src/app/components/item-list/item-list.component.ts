@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Item } from '../../models/item.model';
 import { ItemService } from '../../services/item.service';
 import { HistoryService } from '../../services/history.service';
+import { ImageService } from '../../services/image.service';
 
 @Component({
   selector: 'app-item-list',
@@ -21,7 +22,8 @@ export class ItemListComponent implements OnInit {
 
   constructor(
     private itemService: ItemService, 
-    private historyService: HistoryService
+    private historyService: HistoryService,
+    private imageService: ImageService
   ) { }
 
   ngOnInit(): void {
@@ -39,6 +41,10 @@ export class ItemListComponent implements OnInit {
 
   viewItem(item: Item): void {
     this.historyService.addToHistory(item);
+  }
+
+  getImageUrl(item: Item): string {
+    return this.imageService.getImageUrl(item);
   }
 
   searchItems(): void {

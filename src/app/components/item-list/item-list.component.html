@@ -30,7 +30,7 @@
 <div class="item-list">
   <div *ngFor="let item of filteredItems" class="item-card">
     <div class="item-image">
-      <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=product%20image%20for%20{{item.item_name}}&image_size=square" alt="{{ item.item_name }}">
+      <img [src]="getImageUrl(item)" [alt]="item.item_name">
     </div>
     <h3>{{ item.item_name }}</h3>
     <p class="category">类别: {{ item.category }}</p>
