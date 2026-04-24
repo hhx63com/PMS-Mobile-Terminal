@@ -34,7 +34,6 @@ export class ItemManagementComponent implements OnInit {
   }
 
   addItem(): void {
-    this.newItem.item_id = Math.max(...this.items.map(item => item.item_id)) + 1;
     this.itemService.addItem(this.newItem).subscribe(item => {
       this.items.push(item);
       this.resetForm();
