@@ -1,6 +1,16 @@
-<h2>浏览历史记录</h2>
+<h2>历史记录</h2>
+<div class="history-actions">
+  <button (click)="loadHistory()" class="refresh-btn">
+    <span class="btn-icon">🔄</span>
+    刷新记录
+  </button>
+  <button (click)="clearHistory()" class="clear-btn">
+    <span class="btn-icon">🗑️</span>
+    清空记录
+  </button>
+</div>
 <div *ngIf="history.length === 0" class="empty-history">
-  暂无浏览历史
+  暂无历史记录
 </div>
 <div *ngIf="history.length > 0" class="history-items">
   <div *ngFor="let historyItem of history" class="history-item">
@@ -9,9 +19,25 @@
     </div>
     <div class="history-info">
       <h3>{{ historyItem.item.item_name }}</h3>
-      <p>浏览时间: {{ historyItem.viewedAt | date: 'yyyy-MM-dd HH:mm:ss' }}</p>
+      <div class="history-meta">
+        <p *ngIf="historyItem.operation === 'view'">
+          <span class="operation-badge view">浏览</span>
+          时间: {{ historyItem.viewedAt | date: 'yyyy-MM-dd HH:mm:ss' }}
+        </p>
+        <p *ngIf="historyItem.operation === 'add'">
+          <span class="operation-badge add">添加</span>
+          时间: {{ historyItem.operationTime | date: 'yyyy-MM-dd HH:mm:ss' }}
+        </p>
+        <p *ngIf="historyItem.operation === 'edit'">
+          <span class="operation-badge edit">修改</span>
+          时间: {{ historyItem.operationTime | date: 'yyyy-MM-dd HH:mm:ss' }}
+        </p>
+        <p *ngIf="historyItem.operation === 'delete'">
+          <span class="operation-badge delete">删除</span>
+          时间: {{ historyItem.operationTime | date: 'yyyy-MM-dd HH:mm:ss' }}
+        </p>
+      </div>
       <p>价格: ${{ historyItem.item.price }}</p>
     </div>
   </div>
-  <button (click)="clearHistory()" class="clear-btn">清空历史记录</button>
 </div>

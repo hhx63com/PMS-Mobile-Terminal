@@ -1,14 +1,50 @@
 <div class="search-container">
   <h2>商品列表</h2>
   <div class="search-bar">
-    <div class="search-input">
-      <input 
-        type="text" 
-        [(ngModel)]="searchTerm" 
-        (input)="searchItems()" 
-        placeholder="搜索商品名称、类别或供应商..."
-        class="form-control"
-      >
+    <div class="search-input-container">
+      <div class="search-input">
+        <input 
+          type="text" 
+          [(ngModel)]="searchTerm" 
+          (keypress)="onKeyPress($event)" 
+          (focus)="showSearchHistory = true"
+          placeholder="搜索商品名称、类别或供应商..."
+          class="form-control"
+        >
+        <button 
+          *ngIf="searchTerm" 
+          (click)="searchTerm = ''; searchItems()" 
+          class="clear-search"
+        >
+          ×
+        </button>
+        <button 
+          (click)="searchItems()" 
+          class="search-btn"
+          title="搜索"
+        >
+          🔍
+        </button>
+      </div>
+      <!-- 搜索历史记录 -->
+      <div *ngIf="showSearchHistory && searchHistory.length > 0" class="search-history">
+        <div class="search-history-header">
+          <h4>历史搜索</h4>
+          <button (click)="clearSearchHistory()" class="clear-history-btn">
+            清空
+          </button>
+        </div>
+        <ul class="search-history-list">
+          <li 
+            *ngFor="let term of searchHistory" 
+            (click)="useSearchTerm(term)"
+            class="search-history-item"
+          >
+            <span class="search-icon">🔍</span>
+            {{ term }}
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="category-filter">
       <select 

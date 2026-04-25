@@ -1,37 +1,59 @@
 import { Injectable } from '@angular/core';
-import { HistoryItem } from '../models/history-item.model';
+import { HistoryItem, OperationType } from '../models/history-item.model';
 import { Item } from '../models/item.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HistoryService {
-  private history: HistoryItem[] = [];
+  public static history: HistoryItem[] = [];
   private maxHistoryItems = 20;
 
-  constructor() { }
+  constructor() {
+    console.log('HistoryService initialized, current history length:', HistoryService.history.length);
+  }
 
   getHistory(): HistoryItem[] {
-    return this.history;
+    console.log('getHistory called, current history:', HistoryService.history);
+    return HistoryService.history;
   }
 
   addToHistory(item: Item): void {
-    // Remove if already exists
-    this.history = this.history.filter(historyItem => historyItem.item.item_id !== item.item_id);
+    console.log('addToHistory called for item:', item);
+    HistoryService.history = HistoryService.history.filter(historyItem => historyItem.item.item_id !== item.item_id);
     
-    // Add to beginning
-    this.history.unshift({
+    HistoryService.history.unshift({
       item,
-      viewedAt: new Date()
+      viewedAt: new Date(),
+      operation: 'view'
     });
     
-    // Limit history size
-    if (this.history.length > this.maxHistoryItems) {
-      this.history = this.history.slice(0, this.maxHistoryItems);
+    if (HistoryService.history.length > this.maxHistoryItems) {
+      HistoryService.history = HistoryService.history.slice(0, this.maxHistoryItems);
     }
+    
+    console.log('History after addToHistory:', HistoryService.history);
+  }
+
+  addOperationHistory(item: Item, operation: OperationType): void {
+    console.log('addOperationHistory called for item:', item, 'operation:', operation);
+    HistoryService.history.unshift({
+      item,
+      viewedAt: new Date(),
+      operation: operation,
+      operationTime: new Date()
+    });
+    
+    if (HistoryService.history.length > this.maxHistoryItems) {
+      HistoryService.history = HistoryService.history.slice(0, this.maxHistoryItems);
+    }
+    
+    console.log('History after addOperationHistory:', HistoryService.history);
   }
 
   clearHistory(): void {
-    this.history = [];
+    console.log('clearHistory called');
+    HistoryService.history = [];
+    console.log('History after clearHistory:', HistoryService.history);
   }
 }

@@ -40,7 +40,6 @@
   {"item_id":3079,"item_name":"Generic Electronics Item 2","category":"Electronics","quantity":15,"price":75,"supplier_name":"Generic Supplier","stock_status":"In stock","featured_item":0,"special_note":""},
   {"item_id":3080,"item_name":"Generic Electronics Item 3","category":"Electronics","quantity":20,"price":100,"supplier_name":"Generic Supplier","stock_status":"In stock","featured_item":0,"special_note":""},
   {"item_id":3089,"item_name":"name","category":"Electronics","quantity":8,"price":4,"supplier_name":"name","stock_status":"In stock","featured_item":1,"special_note":""},
-  {"item_id":3090,"item_name":"nnnn","category":"Electronics","quantity":1211121,"price":11212121,"supplier_name":"nnnn","stock_status":"In stock","featured_item":1,"special_note":""},
   {"item_id":3093,"item_name":"desk","category":"Furniture","quantity":10,"price":50,"supplier_name":"wood factory","stock_status":"Low stock","featured_item":1,"special_note":""},
   {"item_id":3094,"item_name":"laptop1","category":"Electronics","quantity":10,"price":500,"supplier_name":"Dell","stock_status":"Low stock","featured_item":1,"special_note":""},
   {"item_id":3095,"item_name":"book","category":"Books","quantity":80,"price":6,"supplier_name":"publisher","stock_status":"In stock","featured_item":0,"special_note":""},

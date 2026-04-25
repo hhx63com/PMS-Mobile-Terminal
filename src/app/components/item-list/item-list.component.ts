@@ -19,6 +19,9 @@ export class ItemListComponent implements OnInit {
   searchTerm: string = '';
   selectedCategory: string = 'all';
   categories: string[] = ['all'];
+  searchHistory: string[] = [];
+  showSearchHistory: boolean = false;
+  private maxHistoryItems = 5;
 
   constructor(
     private itemService: ItemService, 
@@ -31,6 +34,7 @@ export class ItemListComponent implements OnInit {
       this.items = items;
       this.filteredItems = items;
       this.extractCategories();
+      this.loadSearchHistory();
     });
   }
 
@@ -48,6 +52,10 @@ export class ItemListComponent implements OnInit {
   }
 
   searchItems(): void {
+    if (this.searchTerm.trim()) {
+      this.addToSearchHistory(this.searchTerm.trim());
+    }
+    
     this.filteredItems = this.items.filter(item => {
       const matchesSearch = item.item_name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
                           item.category.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
@@ -57,11 +65,56 @@ export class ItemListComponent implements OnInit {
       
       return matchesSearch && matchesCategory;
     });
+    
+    this.showSearchHistory = false;
+  }
+
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.searchItems();
+    }
   }
 
   resetFilter(): void {
     this.searchTerm = '';
     this.selectedCategory = 'all';
     this.filteredItems = this.items;
+  }
+
+  addToSearchHistory(term: string): void {
+    // Remove if already exists
+    this.searchHistory = this.searchHistory.filter(item => item !== term);
+    
+    // Add to beginning
+    this.searchHistory.unshift(term);
+    
+    // Limit history size
+    if (this.searchHistory.length > this.maxHistoryItems) {
+      this.searchHistory = this.searchHistory.slice(0, this.maxHistoryItems);
+    }
+    
+    // Save to localStorage
+    localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
+  }
+
+  loadSearchHistory(): void {
+    const savedHistory = localStorage.getItem('searchHistory');
+    if (savedHistory) {
+      this.searchHistory = JSON.parse(savedHistory);
+    }
+  }
+
+  clearSearchHistory(): void {
+    this.searchHistory = [];
+    localStorage.removeItem('searchHistory');
+  }
+
+  useSearchTerm(term: string): void {
+    this.searchTerm = term;
+    this.searchItems();
+  }
+
+  toggleSearchHistory(): void {
+    this.showSearchHistory = !this.showSearchHistory;
   }
 }

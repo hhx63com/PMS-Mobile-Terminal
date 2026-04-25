@@ -132,36 +132,204 @@
 @media (max-width: 768px) {
   .inventory-summary {
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    gap: 10px;
   }
   
   .summary-card {
-    padding: 15px;
+    padding: 10px;
+  }
+  
+  .summary-card h3 {
+    font-size: 0.85rem;
+    margin-bottom: 5px;
   }
   
   .summary-value {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
   }
   
   .inventory-items {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
   
   .inventory-container {
-    padding: 15px;
+    padding: 10px;
+  }
+  
+  .inventory-item {
+    padding: 6px;
+  }
+  
+  .item-image {
+    height: 80px;
+    margin-bottom: 5px;
+  }
+  
+  .item-info h3 {
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+    line-height: 1.2;
+  }
+  
+  .item-category,
+  .item-supplier,
+  .item-price,
+  .item-stock,
+  .item-note {
+    font-size: 0.65rem;
+    margin: 2px 0;
+  }
+  
+  .item-price {
+    font-size: 0.7rem;
+  }
+  
+  .item-stock {
+    padding: 3px 6px;
+    font-size: 0.6rem;
+  }
+  
+  .item-note {
+    font-size: 0.65rem;
+    padding: 4px;
+    margin-top: 5px;
   }
 }
 
 @media (max-width: 480px) {
   .inventory-summary {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
   
   .summary-card {
-    padding: 12px;
+    padding: 8px;
+  }
+  
+  .summary-card h3 {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
   }
   
   .summary-value {
-    font-size: 1.3rem;
+    font-size: 1rem;
+  }
+  
+  .inventory-items {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  
+  .inventory-container {
+    padding: 8px;
+  }
+  
+  .inventory-item {
+    padding: 4px;
+  }
+  
+  .item-image {
+    height: 60px;
+    margin-bottom: 4px;
+  }
+  
+  .item-info h3 {
+    font-size: 0.65rem;
+    margin-bottom: 2px;
+    line-height: 1.1;
+  }
+  
+  .item-category,
+  .item-supplier,
+  .item-price,
+  .item-stock,
+  .item-note {
+    font-size: 0.6rem;
+    margin: 1px 0;
+  }
+  
+  .item-price {
+    font-size: 0.65rem;
+  }
+  
+  .item-stock {
+    padding: 2px 4px;
+    font-size: 0.55rem;
+  }
+  
+  .item-note {
+    font-size: 0.6rem;
+    padding: 3px;
+    margin-top: 3px;
+  }
+}
+
+/* High DPI large screen phones (1440x2560, DPI 640) */
+@media (max-width: 480px) and (-webkit-device-pixel-ratio: 4) {
+  .inventory-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  
+  .summary-card {
+    padding: 8px;
+  }
+  
+  .summary-card h3 {
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+  }
+  
+  .summary-value {
+    font-size: 1rem;
+  }
+  
+  .inventory-items {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+  
+  .inventory-container {
+    padding: 8px;
+  }
+  
+  .inventory-item {
+    padding: 4px;
+  }
+  
+  .item-image {
+    height: 60px;
+    margin-bottom: 4px;
+  }
+  
+  .item-info h3 {
+    font-size: 0.65rem;
+    margin-bottom: 2px;
+    line-height: 1.1;
+  }
+  
+  .item-category,
+  .item-supplier,
+  .item-price,
+  .item-stock,
+  .item-note {
+    font-size: 0.6rem;
+    margin: 1px 0;
+  }
+  
+  .item-price {
+    font-size: 0.65rem;
+  }
+  
+  .item-stock {
+    padding: 2px 4px;
+    font-size: 0.55rem;
+  }
+  
+  .item-note {
+    font-size: 0.6rem;
+    padding: 3px;
+    margin-top: 3px;
   }
 }

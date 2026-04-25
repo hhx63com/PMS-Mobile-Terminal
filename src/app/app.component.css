@@ -218,3 +218,52 @@ footer .text-center {
     gap: 1rem;
   }
 }
+
+/* High DPI large screen phones (1440x2560, DPI 640) */
+@media (max-width: 480px) and (-webkit-device-pixel-ratio: 4) {
+  .navbar {
+    padding: 1.2rem 0;
+  }
+  
+  .navbar-brand {
+    font-size: 1.4rem;
+  }
+  
+  .brand-icon {
+    font-size: 1.6rem;
+  }
+  
+  .brand-name {
+    font-size: 1.2rem;
+  }
+  
+  .nav-link {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+  }
+  
+  .nav-icon {
+    font-size: 1.2rem;
+  }
+  
+  .nav-text {
+    display: none;
+  }
+  
+  footer {
+    padding: 2rem 0;
+  }
+  
+  footer .row {
+    gap: 1.5rem;
+  }
+  
+  footer h4 {
+    font-size: 1.1rem;
+  }
+  
+  footer p,
+  footer ul li a {
+    font-size: 0.95rem;
+  }
+}

@@ -20,7 +20,14 @@ export class HistoryComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log('HistoryComponent ngOnInit called');
+    this.loadHistory();
+  }
+
+  loadHistory(): void {
+    console.log('loadHistory called');
     this.history = this.historyService.getHistory();
+    console.log('Loaded history:', this.history);
   }
 
   getImageUrl(item: any): string {
