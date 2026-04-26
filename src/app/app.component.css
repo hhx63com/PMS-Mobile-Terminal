@@ -169,7 +169,7 @@ footer .text-center {
   }
   
   .nav-text {
-    display: none;
+    font-size: 0.75rem;
   }
   
   .navbar-brand {
@@ -192,10 +192,15 @@ footer .text-center {
   
   .nav-link {
     padding: 4px 8px;
+    font-size: 0.75rem;
   }
   
   .nav-icon {
     font-size: 1rem;
+  }
+  
+  .nav-text {
+    font-size: 0.7rem;
   }
   
   .navbar-brand {
@@ -247,7 +252,7 @@ footer .text-center {
   }
   
   .nav-text {
-    display: none;
+    font-size: 0.85rem;
   }
   
   footer {
