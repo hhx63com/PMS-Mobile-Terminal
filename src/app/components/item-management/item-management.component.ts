@@ -1,38 +1,44 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Item } from '../../models/item.model';
 import { ItemService } from '../../services/item.service';
 import { HistoryService } from '../../services/history.service';
+import { HelpButtonComponent } from '../help-button/help-button.component';
 
 @Component({
   selector: 'app-item-management',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, HelpButtonComponent],
   templateUrl: './item-management.component.html',
   styleUrl: './item-management.component.css'
 })
 export class ItemManagementComponent implements OnInit, OnDestroy {
   items: Item[] = [];
   filteredItems: Item[] = [];
-  newItem: Item = {
-    item_id: 0,
-    item_name: '',
-    category: '',
-    quantity: 0,
-    price: 0,
-    supplier_name: '',
-    stock_status: 'In stock',
-    featured_item: 0,
-    special_note: ''
-  };
+  itemForm: FormGroup;
   isEditing = false;
   editingItemId: number | null = null;
   searchTerm: string = '';
   private itemsSubscription: Subscription | null = null;
 
-  constructor(private itemService: ItemService, private historyService: HistoryService) { }
+  constructor(
+    private itemService: ItemService, 
+    private historyService: HistoryService, 
+    private formBuilder: FormBuilder
+  ) {
+    this.itemForm = this.formBuilder.group({
+      item_name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+      category: ['', Validators.required],
+      quantity: [0, [Validators.required, Validators.min(0), Validators.pattern('^\\d+$')]],
+      price: [0, [Validators.required, Validators.min(0), Validators.pattern('^\\d+(\\.\\d{1,2})?$')]],
+      supplier_name: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(100)]],
+      stock_status: ['In stock', Validators.required],
+      featured_item: [0],
+      special_note: ['', Validators.maxLength(200)]
+    });
+  }
 
   ngOnInit(): void {
     this.itemService.getItems().subscribe(items => {
@@ -53,18 +59,22 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
   }
 
   submitItem(): void {
-    if (this.isEditing && this.editingItemId !== null) {
-      this.itemService.updateItem(this.editingItemId, this.newItem).subscribe(updatedItem => {
-        this.historyService.addOperationHistory(updatedItem, 'edit');
-        this.resetForm();
-        this.isEditing = false;
-        this.editingItemId = null;
-      });
-    } else {
-      this.itemService.addItem(this.newItem).subscribe(item => {
-        this.historyService.addOperationHistory(item, 'add');
-        this.resetForm();
-      });
+    if (this.itemForm.valid) {
+      const formData = this.itemForm.value;
+      
+      if (this.isEditing && this.editingItemId !== null) {
+        this.itemService.updateItem(this.editingItemId, formData).subscribe(updatedItem => {
+          this.historyService.addOperationHistory(updatedItem, 'edit');
+          this.resetForm();
+          this.isEditing = false;
+          this.editingItemId = null;
+        });
+      } else {
+        this.itemService.addItem(formData).subscribe(item => {
+          this.historyService.addOperationHistory(item, 'add');
+          this.resetForm();
+        });
+      }
     }
   }
 
@@ -78,7 +88,16 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
   }
 
   startEdit(item: Item): void {
-    this.newItem = { ...item };
+    this.itemForm.patchValue({
+      item_name: item.item_name,
+      category: item.category,
+      quantity: item.quantity,
+      price: item.price,
+      supplier_name: item.supplier_name,
+      stock_status: item.stock_status,
+      featured_item: item.featured_item,
+      special_note: item.special_note
+    });
     this.isEditing = true;
     this.editingItemId = item.item_id;
     setTimeout(() => {
@@ -96,8 +115,7 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
   }
 
   resetForm(): void {
-    this.newItem = {
-      item_id: 0,
+    this.itemForm.reset({
       item_name: '',
       category: '',
       quantity: 0,
@@ -106,7 +124,7 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
       stock_status: 'In stock',
       featured_item: 0,
       special_note: ''
-    };
+    });
   }
 
   searchItems(): void {

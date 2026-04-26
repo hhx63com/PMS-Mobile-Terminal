@@ -5,11 +5,12 @@ import { Item } from '../../models/item.model';
 import { ItemService } from '../../services/item.service';
 import { HistoryService } from '../../services/history.service';
 import { ImageService } from '../../services/image.service';
+import { HelpButtonComponent } from '../help-button/help-button.component';
 
 @Component({
   selector: 'app-item-list',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HelpButtonComponent],
   templateUrl: './item-list.component.html',
   styleUrl: './item-list.component.css'
 })

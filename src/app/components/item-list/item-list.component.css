@@ -7,6 +7,21 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-header h2 {
+  text-align: center;
+  color: #333;
+  margin: 0;
+  flex: 1;
+  font-size: 1.5rem;
+}
+
 .search-container h2 {
   margin-top: 0;
   margin-bottom: 20px;

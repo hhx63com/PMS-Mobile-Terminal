@@ -1,20 +1,37 @@
 <div class="item-management-container">
-  <h2 class="page-title">商品管理</h2>
+  <div class="page-header">
+    <h2 class="page-title">商品管理</h2>
+    <app-help-button title="商品管理帮助">
+      <p>本页面用于管理商品信息：</p>
+      <ul>
+        <li><strong>添加商品</strong>：填写表单添加新商品</li>
+        <li><strong>编辑商品</strong>：点击"编辑"按钮修改商品信息</li>
+        <li><strong>删除商品</strong>：点击"删除"按钮移除商品</li>
+        <li><strong>搜索商品</strong>：输入商品名称进行搜索</li>
+        <li><strong>库存状态</strong>：设置商品的库存状态（有货/低库存/缺货）</li>
+      </ul>
+      <p><strong>注意</strong>：所有字段都是必填项，价格和数量必须大于等于0</p>
+    </app-help-button>
+  </div>
 
   <div class="add-item-form" id="item-form-container">
     <div class="form-header">
       <h3>{{ isEditing ? '修改商品' : '添加商品' }}</h3>
       <div class="form-icon">{{ isEditing ? '✏️' : '📦' }}</div>
     </div>
-    <form (ngSubmit)="submitItem()" class="item-form">
+    <form [formGroup]="itemForm" (ngSubmit)="submitItem()" class="item-form">
       <div class="form-row">
         <div class="form-group">
           <label>商品名称</label>
-          <input type="text" [(ngModel)]="newItem.item_name" name="item_name" required placeholder="输入商品名称">
+          <input type="text" formControlName="item_name" placeholder="输入商品名称">
+          <div *ngIf="itemForm.get('item_name')?.invalid && itemForm.get('item_name')?.touched" class="error-message">
+            <div *ngIf="itemForm.get('item_name')?.errors?.['required']">商品名称是必填项</div>
+            <div *ngIf="itemForm.get('item_name')?.errors?.['maxlength']">商品名称不能超过100个字符</div>
+          </div>
         </div>
         <div class="form-group">
           <label>类别</label>
-          <select [(ngModel)]="newItem.category" name="category" required>
+          <select formControlName="category">
             <option value="">选择类别</option>
             <option value="Electronics">电子产品</option>
             <option value="Furniture">家具</option>
@@ -22,51 +39,74 @@
             <option value="Tools">工具</option>
             <option value="Books">图书</option>
           </select>
+          <div *ngIf="itemForm.get('category')?.invalid && itemForm.get('category')?.touched" class="error-message">
+            <div *ngIf="itemForm.get('category')?.errors?.['required']">请选择商品类别</div>
+          </div>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>数量</label>
-          <input type="number" [(ngModel)]="newItem.quantity" name="quantity" required min="0" placeholder="0">
+          <input type="number" formControlName="quantity" placeholder="0">
+          <div *ngIf="itemForm.get('quantity')?.invalid && itemForm.get('quantity')?.touched" class="error-message">
+            <div *ngIf="itemForm.get('quantity')?.errors?.['required']">数量是必填项</div>
+            <div *ngIf="itemForm.get('quantity')?.errors?.['min']">数量不能小于0</div>
+            <div *ngIf="itemForm.get('quantity')?.errors?.['pattern']">数量必须是整数</div>
+          </div>
         </div>
         <div class="form-group">
           <label>价格</label>
-          <input type="number" [(ngModel)]="newItem.price" name="price" required min="0" step="0.01" placeholder="0.00">
+          <input type="number" formControlName="price" step="0.01" placeholder="0.00">
+          <div *ngIf="itemForm.get('price')?.invalid && itemForm.get('price')?.touched" class="error-message">
+            <div *ngIf="itemForm.get('price')?.errors?.['required']">价格是必填项</div>
+            <div *ngIf="itemForm.get('price')?.errors?.['min']">价格不能小于0</div>
+            <div *ngIf="itemForm.get('price')?.errors?.['pattern']">价格格式不正确，最多两位小数</div>
+          </div>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>供应商</label>
-          <input type="text" [(ngModel)]="newItem.supplier_name" name="supplier_name" required placeholder="输入供应商名称">
+          <input type="text" formControlName="supplier_name" placeholder="输入供应商名称">
+          <div *ngIf="itemForm.get('supplier_name')?.invalid && itemForm.get('supplier_name')?.touched" class="error-message">
+            <div *ngIf="itemForm.get('supplier_name')?.errors?.['required']">供应商名称是必填项</div>
+            <div *ngIf="itemForm.get('supplier_name')?.errors?.['maxlength']">供应商名称不能超过100个字符</div>
+          </div>
         </div>
         <div class="form-group">
           <label>库存状态</label>
-          <select [(ngModel)]="newItem.stock_status" name="stock_status" required>
+          <select formControlName="stock_status">
             <option value="In stock">有货</option>
             <option value="Low stock">低库存</option>
             <option value="Out of stock">缺货</option>
           </select>
+          <div *ngIf="itemForm.get('stock_status')?.invalid && itemForm.get('stock_status')?.touched" class="error-message">
+            <div *ngIf="itemForm.get('stock_status')?.errors?.['required']">请选择库存状态</div>
+          </div>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label>特色商品</label>
-          <select [(ngModel)]="newItem.featured_item" name="featured_item">
+          <select formControlName="featured_item">
             <option value="0">否</option>
             <option value="1">是</option>
           </select>
         </div>
         <div class="form-group full-width">
           <label>特殊说明</label>
-          <textarea [(ngModel)]="newItem.special_note" name="special_note" placeholder="输入特殊说明..."></textarea>
+          <textarea formControlName="special_note" placeholder="输入特殊说明..."></textarea>
+          <div *ngIf="itemForm.get('special_note')?.invalid && itemForm.get('special_note')?.touched" class="error-message">
+            <div *ngIf="itemForm.get('special_note')?.errors?.['maxlength']">特殊说明不能超过200个字符</div>
+          </div>
         </div>
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="submit-btn">
+        <button type="submit" class="submit-btn" [disabled]="!itemForm.valid">
           <span class="btn-icon">{{ isEditing ? '💾' : '➕' }}</span>
           {{ isEditing ? '保存修改' : '添加商品' }}
         </button>

@@ -1,25 +1,78 @@
-<h2>库存管理</h2>
+<div class="page-header">
+  <h2>库存管理</h2>
+  <app-help-button title="库存管理帮助">
+    <p>本页面显示所有商品的库存状态：</p>
+    <ul>
+      <li><strong>总商品数</strong>：所有商品的数量</li>
+      <li><strong>有货商品</strong>：库存状态为"In stock"的商品</li>
+      <li><strong>缺货商品</strong>：库存状态为"Out of stock"的商品</li>
+      <li><strong>总库存量</strong>：所有商品的库存数量总和</li>
+    </ul>
+    <p><strong>状态说明</strong>：</p>
+    <ul>
+      <li><span class="status-indicator in-stock"></span> In stock - 库存充足</li>
+      <li><span class="status-indicator low-stock"></span> Low stock - 库存不足</li>
+      <li><span class="status-indicator out-of-stock"></span> Out of stock - 缺货</li>
+    </ul>
+  </app-help-button>
+</div>
 <div class="inventory-summary">
   <div class="summary-card">
     <h3>总商品数</h3>
-    <p class="summary-value">{{ items.length }}</p>
+    <p class="summary-value">{{ filteredItems.length }}</p>
   </div>
   <div class="summary-card">
     <h3>有货商品</h3>
-    <p class="summary-value">{{ getInStockCount() }}</p>
+    <p class="summary-value">{{ getFilteredInStockCount() }}</p>
   </div>
   <div class="summary-card">
     <h3>缺货商品</h3>
-    <p class="summary-value">{{ getOutOfStockCount() }}</p>
+    <p class="summary-value">{{ getFilteredOutOfStockCount() }}</p>
   </div>
   <div class="summary-card">
     <h3>总库存量</h3>
-    <p class="summary-value">{{ getTotalStock() }}</p>
+    <p class="summary-value">{{ getFilteredTotalStock() }}</p>
+  </div>
+</div>
+
+<!-- 分类过滤控件 -->
+<div class="filter-controls">
+  <div class="filter-row">
+    <div class="filter-group">
+      <label>供应商</label>
+      <select [(ngModel)]="selectedSupplier" (change)="filterItems()">
+        <option value="all">全部供应商</option>
+        <option *ngFor="let supplier of suppliers" [value]="supplier">{{ supplier }}</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>库存状态</label>
+      <select [(ngModel)]="selectedStockStatus" (change)="filterItems()">
+        <option value="all">全部状态</option>
+        <option value="In stock">有货</option>
+        <option value="Low stock">低库存</option>
+        <option value="Out of stock">缺货</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>特色商品</label>
+      <select [(ngModel)]="selectedFeatured" (change)="filterItems()">
+        <option value="all">全部</option>
+        <option value="featured">特色商品</option>
+        <option value="non-featured">非特色商品</option>
+      </select>
+    </div>
+    <div class="filter-group reset">
+      <button (click)="resetFilters()" class="reset-btn">
+        <span class="reset-icon">🔄</span>
+        重置过滤
+      </button>
+    </div>
   </div>
 </div>
 <div class="inventory-container">
   <div class="inventory-items">
-    <div *ngFor="let item of items" class="inventory-item">
+    <div *ngFor="let item of filteredItems" class="inventory-item">
       <div class="item-image">
         <img [src]="getImageUrl(item)" [alt]="item.item_name">
       </div>

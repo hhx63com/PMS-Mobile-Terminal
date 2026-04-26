@@ -1,3 +1,37 @@
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-header h2 {
+  text-align: center;
+  color: #333;
+  margin: 0;
+  flex: 1;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.status-indicator.in-stock {
+  background-color: #27ae60;
+}
+
+.status-indicator.low-stock {
+  background-color: #f39c12;
+}
+
+.status-indicator.out-of-stock {
+  background-color: #e74c3c;
+}
+
 .inventory-summary {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -31,6 +65,82 @@
   font-size: 2rem;
   font-weight: bold;
   color: #28a745;
+}
+
+.filter-controls {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.filter-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-group label {
+  font-weight: 500;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.filter-group select {
+  padding: 10px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: #fff;
+}
+
+.filter-group.reset {
+  flex: 0 0 auto;
+  min-width: auto;
+  margin-left: auto;
+}
+
+.reset-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.reset-icon {
+  font-size: 1.1rem;
 }
 
 .inventory-container {
@@ -130,6 +240,33 @@
 }
 
 @media (max-width: 768px) {
+  .filter-controls {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .filter-row {
+    gap: 10px;
+  }
+  
+  .filter-group {
+    min-width: 150px;
+  }
+  
+  .filter-group label {
+    font-size: 0.8rem;
+  }
+  
+  .filter-group select {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+  
+  .reset-btn {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+  
   .inventory-summary {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
