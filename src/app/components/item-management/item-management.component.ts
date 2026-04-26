@@ -15,6 +15,7 @@ import { HistoryService } from '../../services/history.service';
 })
 export class ItemManagementComponent implements OnInit, OnDestroy {
   items: Item[] = [];
+  filteredItems: Item[] = [];
   newItem: Item = {
     item_id: 0,
     item_name: '',
@@ -28,6 +29,7 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
   };
   isEditing = false;
   editingItemId: number | null = null;
+  searchTerm: string = '';
   private itemsSubscription: Subscription | null = null;
 
   constructor(private itemService: ItemService, private historyService: HistoryService) { }
@@ -35,10 +37,12 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.itemService.getItems().subscribe(items => {
       this.items = items;
+      this.filteredItems = items;
     });
     
     this.itemsSubscription = this.itemService.getItemsUpdatedListener().subscribe(items => {
       this.items = items;
+      this.filterItems();
     });
   }
 
@@ -49,24 +53,15 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
   }
 
   submitItem(): void {
-    console.log('submitItem called, isEditing:', this.isEditing, 'editingItemId:', this.editingItemId);
     if (this.isEditing && this.editingItemId !== null) {
-      console.log('Updating item:', this.newItem);
       this.itemService.updateItem(this.editingItemId, this.newItem).subscribe(updatedItem => {
-        console.log('Item updated:', updatedItem);
-        // 记录修改操作
-        console.log('Adding edit operation to history');
         this.historyService.addOperationHistory(updatedItem, 'edit');
         this.resetForm();
         this.isEditing = false;
         this.editingItemId = null;
       });
     } else {
-      console.log('Adding new item:', this.newItem);
       this.itemService.addItem(this.newItem).subscribe(item => {
-        console.log('Item added:', item);
-        // 记录添加操作
-        console.log('Adding add operation to history');
         this.historyService.addOperationHistory(item, 'add');
         this.resetForm();
       });
@@ -74,15 +69,9 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
   }
 
   deleteItem(id: number): void {
-    console.log('deleteItem called for id:', id);
-    // 找到要删除的商品
     const itemToDelete = this.items.find(item => item.item_id === id);
-    console.log('Item to delete:', itemToDelete);
     this.itemService.deleteItem(id).subscribe(() => {
-      console.log('Item deleted');
-      // 记录删除操作
       if (itemToDelete) {
-        console.log('Adding delete operation to history');
         this.historyService.addOperationHistory(itemToDelete, 'delete');
       }
     });
@@ -118,5 +107,31 @@ export class ItemManagementComponent implements OnInit, OnDestroy {
       featured_item: 0,
       special_note: ''
     };
+  }
+
+  searchItems(): void {
+    this.filterItems();
+  }
+
+  filterItems(): void {
+    if (!this.searchTerm) {
+      this.filteredItems = this.items;
+    } else {
+      const searchLower = this.searchTerm.toLowerCase();
+      this.filteredItems = this.items.filter(item => 
+        item.item_name.toLowerCase().includes(searchLower)
+      );
+    }
+  }
+
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.filterItems();
+  }
+
+  onKeyPress(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      this.searchItems();
+    }
   }
 }

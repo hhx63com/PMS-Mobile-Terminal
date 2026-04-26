@@ -81,11 +81,29 @@
   <div class="item-list">
     <div class="list-header">
       <h3>商品列表</h3>
-      <div class="item-count">{{ items.length }} 个商品</div>
+      <div class="search-container">
+        <div class="search-input-group">
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            name="searchTerm"
+            placeholder="搜索商品名称..."
+            (keypress)="onKeyPress($event)"
+            class="search-input"
+          >
+          <button (click)="searchItems()" class="search-btn">
+            <span class="btn-icon">🔍</span>
+          </button>
+          <button (click)="clearSearch()" *ngIf="searchTerm" class="clear-btn">
+            <span class="btn-icon">✕</span>
+          </button>
+        </div>
+        <div class="item-count">{{ filteredItems.length }} 个商品</div>
+      </div>
     </div>
 
     <div class="items-grid">
-      <div *ngFor="let item of items" class="item-card">
+      <div *ngFor="let item of filteredItems" class="item-card">
         <div class="item-header">
           <h4>{{ item.item_name }}</h4>
           <span class="stock-badge" [class]="item.stock_status.toLowerCase().replace(' ', '-')">
