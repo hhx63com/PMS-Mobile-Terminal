@@ -21,6 +21,8 @@ export class ItemListComponent implements OnInit {
   categories: string[] = ['all'];
   searchHistory: string[] = [];
   showSearchHistory: boolean = false;
+  selectedItem: Item | null = null;
+  showModal: boolean = false;
   private maxHistoryItems = 5;
 
   constructor(
@@ -44,7 +46,19 @@ export class ItemListComponent implements OnInit {
   }
 
   viewItem(item: Item): void {
+    this.selectedItem = item;
+    this.showModal = true;
     this.historyService.addToHistory(item);
+  }
+
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedItem = null;
+  }
+
+  getStockClass(status: string | undefined): string {
+    if (!status) return '';
+    return status.toLowerCase().replace(' ', '-');
   }
 
   getImageUrl(item: Item): string {
@@ -82,18 +96,11 @@ export class ItemListComponent implements OnInit {
   }
 
   addToSearchHistory(term: string): void {
-    // Remove if already exists
     this.searchHistory = this.searchHistory.filter(item => item !== term);
-    
-    // Add to beginning
     this.searchHistory.unshift(term);
-    
-    // Limit history size
     if (this.searchHistory.length > this.maxHistoryItems) {
       this.searchHistory = this.searchHistory.slice(0, this.maxHistoryItems);
     }
-    
-    // Save to localStorage
     localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
   }
 
